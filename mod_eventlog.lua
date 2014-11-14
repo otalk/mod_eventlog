@@ -31,7 +31,7 @@ module:hook("message/host", function (event)
             local metric = tag.attr.name;
             local value = tag.attr.value;
 
-            module:log("debug", "Event stat: %s = %s", metric, value);
+            module:log("debug", "METRIC: Event stat: %s = %s", metric, value);
             module:fire_event("eventlog-stat", {
                 room = log.attr.subject,
                 metric = metric,
@@ -45,7 +45,7 @@ module:hook("message/host", function (event)
             return;
         end
 
-        module:log(level, "%s", message);
+        module:log(level, "CLIENTLOG: %s", message);
     end
 end);
 
