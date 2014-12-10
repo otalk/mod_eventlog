@@ -38,6 +38,7 @@ module:hook("message/host", function (event)
                 value = value
             });
         end
+        return true;
     elseif logType == "log" then
         local level = log_levels[log.attr.type] or "info";
         local message = log:get_child_text("message", xmlns_log);
@@ -46,6 +47,7 @@ module:hook("message/host", function (event)
         end
 
         module:log(level, "CLIENTLOG: %s", message);
+        return true;
     end
 end);
 
