@@ -21,34 +21,42 @@ module:hook("message/host", function (event)
 
     local log = stanza:get_child("log", xmlns_log);
     if not log then
-        return
+        return true;
     end
 
     local logType = log.attr.id;
+    local logMessage = {
+        service = log.attr.facility,
+        room = log.attr.subject,
+    };
 
     if logType == "metric" then
         for tag in log:childtags("tag", xmlns_log) do
-            local metric = tag.attr.name;
-            local value = tag.attr.value;
+            logMessage.metric = tag.attr.name;
+            logMessage.value = tag.attr.value;
 
-            module:log("debug", "METRIC: Event stat: %s = %s", metric, value);
-            module:fire_event("eventlog-stat", {
-                room = log.attr.subject,
-                metric = metric,
-                value = value
-            });
+            module:log("debug", "METRIC: Event stat: %s", json.encode(logMessage));
+            module:fire_event("eventlog-stat", logMessage);
         end
-        return true;
     elseif logType == "log" then
         local level = log_levels[log.attr.type] or "info";
         local message = log:get_child_text("message", xmlns_log);
-        if not message then
-            return;
+        if message then
+            logMessage.message = message;
+            module:log(level, "CLIENTLOG: %s", json.encode(logMessage));
         end
-
-        module:log(level, "CLIENTLOG: %s", message);
-        return true;
+    elseif logType == "peerconnectiontrace" then
+        for tag in log:childtags("tag", xmlns_log) do
+            local value = tag.attr.value;
+            if value[1] == "{" or value[1] == "[" then
+                value = json.decode(value);
+            end
+            logMessage[tag.atter.name] = value;
+        end
+        module:log("debug", "PEERCONNECTIONTRACE: %s", json.encode(message));
     end
+
+    return true;
 end);
 
 
