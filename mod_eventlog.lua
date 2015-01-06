@@ -15,7 +15,7 @@ module:depends("disco");
 module:add_identity("component", "log", module:get_option_string("name", "Event Logger"));
 module:add_feature("urn:xmpp:eventlog");
 
---local jid = require "util.jid"
+local jid = require "util.jid"
 module:hook("message/host", function (event)
     local origin, stanza = event.origin, event.stanza;
 
@@ -27,16 +27,15 @@ module:hook("message/host", function (event)
     local logType = log.attr.id;
 
     if logType == "metric" then
+        local user, host, resource = jid.prepped_split(stanza.attr.from)
+        local from = host
+        local service = log.attr.facility:sub(9);
         for tag in log:childtags("tag", xmlns_log) do
             local metric = tag.attr.name;
             local value = tag.attr.value;
-            -- need to figure out how to use jid.split
-            -- local from = tag.attr.from;
-            local service = log.attr.facility:sub(9);
-
             module:log("debug", "METRIC: Event stat: %s = %s", metric, value);
             module:fire_event("eventlog-stat", {
-                -- from = from,
+                from = from,
                 service = service,
                 room = log.attr.subject,
                 metric = metric,
