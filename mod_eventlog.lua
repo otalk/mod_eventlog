@@ -130,7 +130,7 @@ module:hook("message/host", function (event)
             service = service;
             room = room;
         });
-    elseif has_prefx(log_type, 'ios-ui-metric-') then
+    elseif has_prefix(log_type, 'ios-ui-metric-') then
         local metric_name = get_suffix(log_type, 'ios-ui-metric-');
         process_metric("ios", metric_name, log, {
             user_service = user_service;
