@@ -144,11 +144,11 @@ module:hook("message/host", function (event)
             service = service;
             room = room;
         });
-    elseif has_prefix('peerconnectiontrace') then
+    elseif has_prefix(log_type, 'peerconnectiontrace') then
         process_trace('webrtc', log);
-    elseif has_prefix('webrtc-trace') then
+    elseif has_prefix(log_type, 'webrtc-trace') then
         process_trace('webrtc', log);
-    elseif has_prefix('session-event') then
+    elseif has_prefix(log_type, 'session-event') then
         process_trace('session', log);
     end
 
