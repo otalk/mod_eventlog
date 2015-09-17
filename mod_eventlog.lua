@@ -64,7 +64,7 @@ local function process_trace(category, log, info)
 
     for tag in log:childtags("tag", xmlns_log) do
         local key = tag.attr.name;
-        local value = tag.attr.value;
+        local value = tag.attr.value or "";
 
         if value[1] == '{' or value[1] == '[' then
             value = json.decode(value);
