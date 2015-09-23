@@ -25,14 +25,16 @@ end
 
 local function get_suffix(str, prefix)
     if has_prefix(str, prefix) then
-        return string.sub(str, string.len(prefix))
+        return string.sub(str, string.len(prefix) + 1)
     else
         return str;
     end
 end
 
 local function process_metric(category, metric_name, log, info)
-   local main = {};
+   local main = {
+       [metric_name] = 1;
+   };
    local meta = {};
 
    for tag in log:childtags("tag", xmlns_log) do
