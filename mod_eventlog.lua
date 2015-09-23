@@ -24,7 +24,7 @@ local function has_prefix(str, prefix)
 end
 
 local function get_suffix(str, prefix)
-    if hash_prefix(str, prefix) then
+    if has_prefix(str, prefix) then
         return string.sub(str, string.len(prefix))
     else
         return str;
