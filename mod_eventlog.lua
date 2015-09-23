@@ -103,6 +103,10 @@ module:hook("message/host", function (event)
     local level = log_levels[log.attr.type] or "info";
     local log_type = log.attr.id;
 
+    if has_prefix(service, 'https://') then
+        service = get_suffix(facility, 'https://');
+    end
+
     if log_type == 'log' then
         local message = log:get_child_text("message", xmlns_log);
         if not message then
