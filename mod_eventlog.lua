@@ -104,7 +104,7 @@ module:hook("message/host", function (event)
     local log_type = log.attr.id;
 
     if has_prefix(service, 'https://') then
-        service = get_suffix(facility, 'https://');
+        service = get_suffix(service, 'https://');
     end
 
     if log_type == 'log' then
