@@ -46,7 +46,7 @@ local function process_metric(category, metric_name, log, info)
            meta[metric] = value;
        end
 
-       module:log("debug", "METRIC: (%s) Event stat: %s = %s; %s", category, main.metric, main.value, json.serialize(meta));
+       module:log("debug", "METRIC: (%s) Event stat: %s = %s; %s", category, main.metric, main.value, json.encode(meta));
        module:fire_event("eventlog-stat", {
            category = category;
            from = info.user_service;
