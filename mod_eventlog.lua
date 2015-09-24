@@ -33,7 +33,8 @@ end
 
 local function process_metric(category, metric_name, log, info)
    local main = {
-       [metric_name] = 1;
+       metric = metric_name;
+       value = 1;
    };
    local meta = {};
 
@@ -47,18 +48,18 @@ local function process_metric(category, metric_name, log, info)
        else
            meta[metric] = value;
        end
-
-       module:log("debug", "METRIC: (%s) Event stat: %s = %s; %s", category, main.metric, main.value, json.encode(meta));
-       module:fire_event("eventlog-stat", {
-           category = category;
-           from = info.user_service;
-           service = info.service;
-           room = info.room;
-           metric = main.metric;
-           value = main.value;
-           meta = meta;
-       });
    end
+
+   module:log("debug", "METRIC: (%s) Event stat: %s = %s; %s", category, main.metric, main.value, json.encode(meta));
+   module:fire_event("eventlog-stat", {
+       category = category;
+       from = info.user_service;
+       service = info.service;
+       room = info.room;
+       metric = main.metric;
+       value = main.value;
+       meta = meta;
+   });
 end
 
 local function process_trace(category, log, info)
